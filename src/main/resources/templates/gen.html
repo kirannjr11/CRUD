@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="text-light">
+        <span th:text="${loggedInUser.firstName}"></span>
+        <span th:text="${loggedInUser.lastName}"></span>
+    </div>
+    <form class="form-inline" th:action="@{/logout}" th:method="POST">
+        <button class="btn btn-outline-dark my-2 my-sm-0 text-light" type="submit">Logout</button>
+    </form>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 bg-white text-primary d-flex flex-column vh-100 ">
+            <form action="/admin/gen" method="GET">
+                <button type="submit" class="btn btn-white btn-lg btn-block active">Admin</button>
+            </form>
+            <form action="/user" method="GET">
+                <button type="submit" class="btn btn-white btn-lg btn-block active">User</button>
+            </form>
+        </div>
+
+
+        <div class="col-lg-9 bg-light text-dark d-flex flex-column vh-100">
+            <div class="container">
+                <div class="col">
+                    <div class="col-lg-12 offset-lg py-5">
+                        <h1>Admin panel</h1>
+                        <div class="card mt-5">
+                            <div class="card-header">
+                                <div class="row">
+
+                                    <form action="/admin/gen" method="GET" class="d-inline">
+                                        <button type="submit" class="btn btn-light">All Users</button>
+                                    </form>
+
+
+                                    <form class="ml-2" action="/admin/new">
+                                        <button type="submit" class="btn btn-light">New User</button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+
+                            <div class="card-header">
+                                <h2>All Users</h2>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Country</th>
+                                        <th>Roles</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="user : ${users}">
+                                        <td th:text="${user.id}"></td>
+                                        <td th:text="${user.getFirstName()}"></td>
+                                        <td th:text="${user.getLastName()}"></td>
+                                        <td th:text="${user.getCountry()}"></td>
+                                        <td>
+                                            <span th:each="role, iterStat : ${user.roles}">
+                                                <span th:text="${#strings.substringAfter(role.role, 'ROLE_')}"></span>
+                                                <span th:if="${!iterStat.last}">, </span>
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <form th:action="@{/admin/edit}" method="put">
+                                                <input type="hidden" name="id" th:value="${user.id}"/>
+                                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form th:action="@{/admin/delete}" method="post">
+                                                <input type="hidden" name="id" th:value="${user.id}"/>
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

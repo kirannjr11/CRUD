@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update user</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Edit User</h5>
+                    <button type="button" class="close d-none d-md-block" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="card-body">
+                    <form th:method="put" th:action="@{/admin/edit}" th:object="${user}" class="card-body">
+                        <div class="form-group">
+                            <label for="id">ID</label>
+                            <input type="text" class="form-control" th:field="*{id}" th:value="${user.id}" id="id" hidden="hidden">
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" class="form-control" th:field="*{firstName}" id="firstName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" class="form-control" th:field="*{lastName}" id="lastName">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" class="form-control" th:field="*{country}" id="country">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" th:field="*{password}" id="password">
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="roles">Roles</label>
+                            <select id="roles" name="roles" th:field="*{roles}" multiple>
+                                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${#strings.substringAfter(role.role, 'ROLE_')}" ></option>
+                            </select>
+                        </div>
+                        <div class="card-header d-flex justify-content-end py-3">
+                            <button type="submit" class="btn btn-secondary">Close</button>
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </div>
+                    </form>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
