@@ -18,8 +18,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void add(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        String rawPassword = user.getPassword();
+        if (rawPassword != null) {
+            String encodedPassword = passwordEncoder.encode(rawPassword);
+            user.setPassword(encodedPassword);
+            userRepository.save(user);
+        } else {
+            System.out.println("hello kiran");
+        }
     }
 
     @Override

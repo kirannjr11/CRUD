@@ -4,6 +4,7 @@ import habsida.spring.boot_security.demo.models.User;
 import habsida.spring.boot_security.demo.services.RoleService;
 import habsida.spring.boot_security.demo.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @AllArgsConstructor
@@ -31,7 +34,7 @@ public class UserController {
 
         String username = authentication.getName();
 
-       Optional<User> loggedInUserOptional = userService.findByName(username);
+        Optional<User> loggedInUserOptional = userService.findByName(username);
 
 
         if (loggedInUserOptional.isPresent()) {
@@ -46,6 +49,10 @@ public class UserController {
         mov.addObject("users",userService.listUsers());
         return mov;
     }
+
+
+
+
 
     @GetMapping("/admin/new")
     public ModelAndView newPerson(@ModelAttribute("user") User user) {
@@ -68,7 +75,7 @@ public class UserController {
         User user = userService.userById(id).get();
         mav.addObject("user", user);
         mav.addObject("roles", roleService.listRoles());
-        return mav ;
+        return mav;
     }
 
     @PostMapping("/admin/edit")
@@ -103,8 +110,5 @@ public class UserController {
 //        model.addAttribute("username", principal.getName());
 //        return "user";
 //    }
-
-
-
 
 }
