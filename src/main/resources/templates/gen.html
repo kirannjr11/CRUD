@@ -17,7 +17,7 @@
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <div class="col bg-light text-dark d-flex flex-column vh-100">
+        <div class="col bg-light text-dark d-flex flex-column vh-50">
             <div class="container">
                 <div class="col">
                     <div class="col-lg-12 offset-lg py-5">
@@ -66,31 +66,23 @@
 <!--    add user-->
 
     <div class="row">
-        <div class="col-md-6 bg-white text-primary d-flex flex-column vh-100">
+        <div class="col-md-6 bg-white text-primary d-flex flex-column vh-50">
             <div class="card-header">
-<!--                <div class="row">-->
-<!--                    <form action="/admin/gen" method="GET" class="d-inline">-->
-<!--                        <button type="submit" class="btn btn-light">All Users</button>-->
-<!--                    </form>-->
-<!--                    <form class="ml-2" action="/admin/new">-->
-<!--                        <button type="submit" class="btn btn-light">New User</button>-->
-<!--                    </form>-->
-<!--                </div>-->
                 <div class="card-header">
                     <h5 class="card-title mb-0">Add New User</h5>
                 </div>
                 <div class="card-body">
                     <form method="post" action="/admin/gen">
                         <div class="form-group text-center">
-                            <label for="firstName">Enter firstname</label>
+                            <label for="firstName">Enter firsName</label>
                             <input type="text" id="firstName" required/>
                         </div>
                         <div class="form-group text-center">
-                            <label for="lastName">Enter Lastname</label>
+                            <label for="lastName">Enter LastName</label>
                             <input type="text" id="lastName" required/>
                         </div>
                         <div class="form-group text-center">
-                            <label for="country">Enter country</label>
+                            <label for="country">Enter Country</label>
                             <input type="text" id="country" required/>
                         </div>
                         <div class="form-group text-center">
@@ -117,19 +109,16 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">Edit User</h5>
-                    <button type="button" class="close d-none d-md-block" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="card-body">
                     <form id="editUserForm">
                         <input type="hidden" id="editId"/>
                         <div class="form-group text-center">
-                            <label for="editfirstName">Enter firstname</label>
+                            <label for="editfirstName">Enter firstName</label>
                             <input type="text" id="editfirstName" required/>
                         </div>
                         <div class="form-group text-center">
-                            <label for="editlastName">Enter Lastname</label>
+                            <label for="editlastName">Enter lastName</label>
                             <input type="text" id="editlastName" required/>
                         </div>
                         <div class="form-group text-center">
@@ -210,6 +199,12 @@ $("#addBtn").click(function() {
         success: function(response) {
             alert("Do you like to add User? : " + response.firstName);
             fetchUsers();
+
+            $("#firstName").val("");
+            $("#lastName").val("");
+             $("#country").val("");
+            $("#password").val("");
+            $("#roles").val("");
         },
         error: function(xhr, status, error) {
             console.log("Error while adding new user: " + error);
@@ -250,10 +245,10 @@ $(document).on("click", ".editBtn", function() {
 $("#updateBtn").click(function() {
     var id = $("#editId").val();
     var firstName = $("#editfirstName").val();
-    var lastName = $("#editLastName").val();
+    var lastName = $("#editlastName").val();
     var country = $("#editcountry").val();
-    var password = $("#editPassword").val();
-    var roles = $("#editRoles").val();
+    var password = $("#editpassword").val();
+    var roles = $("#editroles").val();
     $.ajax({
         url: "/admin/user/update?id=" + id,
         type: "PUT",
@@ -270,6 +265,14 @@ $("#updateBtn").click(function() {
             alert("Do you want to update User?: " + response.firstName);
             $("#editSection").hide();
             fetchUsers();
+
+            $("#editId").val("");
+            $("#editfirstName").val("");
+            $("#editlastName").val("");
+            $("#editcountry").val("");
+            $("#editpassword").val("");
+            $("#editroles").val("");
+
         },
         error: function(xhr, status, error) {
             console.log("Can not update User: " + error);
