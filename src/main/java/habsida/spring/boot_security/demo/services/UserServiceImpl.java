@@ -17,15 +17,10 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public void add(User user) {
-        String rawPassword = user.getPassword();
-        if (rawPassword != null) {
-            String encodedPassword = passwordEncoder.encode(rawPassword);
-            user.setPassword(encodedPassword);
-            userRepository.save(user);
-        } else {
-            System.out.println("hello kiran");
-        }
+    public User add(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return user;
     }
 
     @Override
@@ -38,11 +33,17 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+
     @Override
-    public void update(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public User update(Long id, User user) {
+        String newPassword = user.getPassword();
+        if (newPassword != null) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        }
         userRepository.save(user);
+        return user;
     }
+
 
     @Override
     public Optional<User> userById(long id) {

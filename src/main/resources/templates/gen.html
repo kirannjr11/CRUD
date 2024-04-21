@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,26 +8,16 @@
 <body>
 <nav class="navbar navbar-dark bg-dark">
     <div class="text-light">
-        <span th:text="${loggedInUser.firstName}"></span>
-        <span th:text="${loggedInUser.lastName}"></span>
+        <span></span>
+        <span></span>
     </div>
-    <form class="form-inline" th:action="@{/logout}" th:method="POST">
+    <form class="form-inline" action="/logout" method="POST">
         <button class="btn btn-outline-dark my-2 my-sm-0 text-light" type="submit">Logout</button>
     </form>
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-3 bg-white text-primary d-flex flex-column vh-100 ">
-            <form action="/admin/gen" method="GET">
-                <button type="submit" class="btn btn-white btn-lg btn-block active">Admin</button>
-            </form>
-            <form action="/user" method="GET">
-                <button type="submit" class="btn btn-white btn-lg btn-block active">User</button>
-            </form>
-        </div>
-
-
-        <div class="col-lg-9 bg-light text-dark d-flex flex-column vh-100">
+        <div class="col bg-light text-dark d-flex flex-column vh-100">
             <div class="container">
                 <div class="col">
                     <div class="col-lg-12 offset-lg py-5">
@@ -36,20 +25,14 @@
                         <div class="card mt-5">
                             <div class="card-header">
                                 <div class="row">
-
                                     <form action="/admin/gen" method="GET" class="d-inline">
                                         <button type="submit" class="btn btn-light">All Users</button>
                                     </form>
-
-
                                     <form class="ml-2" action="/admin/new">
                                         <button type="submit" class="btn btn-light">New User</button>
                                     </form>
-
                                 </div>
                             </div>
-
-
                             <div class="card-header">
                                 <h2>All Users</h2>
                             </div>
@@ -66,37 +49,11 @@
                                         <th>Delete</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr th:each="user : ${users}">
-                                        <td th:text="${user.id}"></td>
-                                        <td th:text="${user.getFirstName()}"></td>
-                                        <td th:text="${user.getLastName()}"></td>
-                                        <td th:text="${user.getCountry()}"></td>
-                                        <td>
-                                            <span th:each="role, iterStat : ${user.roles}">
-                                                <span th:text="${#strings.substringAfter(role.role, 'ROLE_')}"></span>
-                                                <span th:if="${!iterStat.last}">, </span>
-                                            </span>
-                                        </td>
+                                    <tbody id="userTable">
 
-                                        <td>
-                                            <form th:action="@{/admin/edit}" method="put">
-                                                <input type="hidden" name="id" th:value="${user.id}"/>
-                                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form th:action="@{/admin/delete}" method="post">
-                                                <input type="hidden" name="id" th:value="${user.id}"/>
-                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                            </form>
-                                        </td>
 
-                                    </tr>
                                     </tbody>
-
                                 </table>
-
                             </div>
                         </div>
                     </div>
@@ -104,6 +61,245 @@
             </div>
         </div>
     </div>
+
+
+<!--    add user-->
+
+    <div class="row">
+        <div class="col-md-6 bg-white text-primary d-flex flex-column vh-100">
+            <div class="card-header">
+<!--                <div class="row">-->
+<!--                    <form action="/admin/gen" method="GET" class="d-inline">-->
+<!--                        <button type="submit" class="btn btn-light">All Users</button>-->
+<!--                    </form>-->
+<!--                    <form class="ml-2" action="/admin/new">-->
+<!--                        <button type="submit" class="btn btn-light">New User</button>-->
+<!--                    </form>-->
+<!--                </div>-->
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Add New User</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="/admin/gen">
+                        <div class="form-group text-center">
+                            <label for="firstName">Enter firstname</label>
+                            <input type="text" id="firstName" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="lastName">Enter Lastname</label>
+                            <input type="text" id="lastName" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="country">Enter country</label>
+                            <input type="text" id="country" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="password">Enter Password</label>
+                            <input type="password" id="password" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="roles">Roles</label>
+                            <select id="roles" multiple>
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" id = "addBtn" class="btn btn-success">Add </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+<!--        edit user-->
+
+        <div class="col-md-6 bg-white text-primary d-flex flex-column vh-100">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Edit User</h5>
+                    <button type="button" class="close d-none d-md-block" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form id="editUserForm">
+                        <input type="hidden" id="editId"/>
+                        <div class="form-group text-center">
+                            <label for="editfirstName">Enter firstname</label>
+                            <input type="text" id="editfirstName" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="editlastName">Enter Lastname</label>
+                            <input type="text" id="editlastName" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="editcountry">Enter country</label>
+                            <input type="text" id="editcountry" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="editpassword">Enter Password</label>
+                            <input type="password" id="editpassword" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="editroles">Roles</label>
+                            <select id="editroles" multiple>
+
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" id="updateBtn" class="btn btn-primary">Update</button>
+                            <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function fetchUsers() {
+        $.ajax({
+            url: "/admin/userData",
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                var tableBody = $("#userTable");
+                tableBody.empty();
+                data.forEach(function(user) {
+                    var row = "<tr>" +
+                        "<td>" + user.id + "</td>" +
+                        "<td>" + user.firstName + "</td>" +
+                        "<td>" + user.lastName + "</td>" +
+                        "<td>" + user.country + "</td>" +
+                        "<td>" + user.roles.map(role => role.role).join(", ") + "</td>" +
+                        "<td><button class='btn btn-primary btn-sm editBtn' data-id='" + user.id + "'>Edit</button></td>" +
+                        "<td><button class='btn btn-danger btn-sm deleteBtn' data-id='" + user.id + "'>Delete</button></td>" +
+                        "</tr>";
+
+                    tableBody.append(row);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.log("error while fetching user data: " + error);
+            }
+        });
+    }
+
+<!--    add User-->
+
+$("#addBtn").click(function() {
+    var firstName = $("#firstName").val();
+    var lastName = $("#lastName").val();
+    var country = $("#country").val();
+    var password = $("#password").val();
+    var roles = $("#roles").val();
+
+    $.ajax({
+        url: "/admin/addUser",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ // Corrected syntax: added parentheses
+            firstName: firstName,
+            lastName: lastName,
+            country: country,
+            password: password,
+            roles: roles
+        }), // Corrected syntax: added closing parenthesis
+        success: function(response) {
+            alert("Do you like to add User? : " + response.firstName);
+            fetchUsers();
+        },
+        error: function(xhr, status, error) {
+            console.log("Error while adding new user: " + error);
+        }
+    });
+});
+
+<!---->
+
+$(document).on("click", ".editBtn", function() {
+    var id = $(this).data("id"); // Corrected this line
+    $.ajax({
+        url: "/admin/edit?id=" + id,
+        type: "GET",
+        datatype: "json",
+        success: function(data) {
+            $("#editId").val(data.id);
+            $("#editfirstName").val(data.firstName);
+            $("#editlastName").val(data.lastName);
+            $("#editcountry").val(data.country);
+            $("#editPassword").val(data.password);
+
+            $("#editRoles").empty();
+            data.roles.forEach(function(role) {
+                 $("#editRoles").append('<option value="' + role.id + '">' + role.role + '</option>');
+            });
+            $("#editSection").show(); // Corrected this line
+        },
+        error: function(xhr, status, error) {
+            console.log("error while editing: " + error);
+        }
+    });
+});
+
+
+
+<!--update-->
+$("#updateBtn").click(function() {
+    var id = $("#editId").val();
+    var firstName = $("#editfirstName").val();
+    var lastName = $("#editLastName").val();
+    var country = $("#editcountry").val();
+    var password = $("#editPassword").val();
+    var roles = $("#editRoles").val();
+    $.ajax({
+        url: "/admin/user/update?id=" + id,
+        type: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify({
+            id: id,
+            firstName: firstName,
+            lastName: lastName,
+            country: country,
+            password: password,
+            roles: roles
+        }),
+        success: function(response) {
+            alert("Do you want to update User?: " + response.firstName);
+            $("#editSection").hide();
+            fetchUsers();
+        },
+        error: function(xhr, status, error) {
+            console.log("Can not update User: " + error);
+        }
+    });
+});
+
+
+<!--delete-->
+
+$(document).on("click", ".deleteBtn", function() {
+    var id = $(this).data("id");
+    if (confirm("Do you really want to delete this user?")) {
+        $.ajax({
+            url: "/admin/user?id=" + id, // Corrected this line
+            type: "DELETE",
+            success: function(response) {
+                fetchUsers();
+            },
+            error: function(xhr, status, error) {
+                console.log("Can not delete user: " + error);
+            }
+        });
+    }
+});
+
+
+
+    fetchUsers();
+</script>
+
 </body>
 </html>
