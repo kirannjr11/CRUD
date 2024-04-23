@@ -92,7 +92,7 @@
                         <div class="form-group text-center">
                             <label for="roles">Roles</label>
                             <select id="roles" multiple>
-
+                                <option></option>
                             </select>
                         </div>
                         <div class="text-center">
@@ -176,6 +176,30 @@
         });
     }
 
+
+function fetchRoles() {
+    $.ajax({
+        url: "/admin/addRoles",
+        type: "GET",
+        success: function(response) {
+        console.log("Role response: ", response);
+            var rolesSelect = $("#roles");
+            rolesSelect.empty(); // Clear previous options
+            $.each(response, function(index, role) {
+            console.log("Role: ", role)
+                rolesSelect.append("<option value='" + role.role + "'>" + role.role + "</option>");
+            });
+        },
+        error: function(xhr, status, error) {
+            console.log("Error while fetching roles: " + error);
+        }
+    });
+}
+
+$(document).ready(function() {
+    fetchRoles();
+});
+
 <!--    add User-->
 
 $("#addBtn").click(function() {
@@ -189,7 +213,7 @@ $("#addBtn").click(function() {
         url: "/admin/addUser",
         type: "POST",
         contentType: "application/json",
-        data: JSON.stringify({ // Corrected syntax: added parentheses
+        data: JSON.stringify({
             firstName: firstName,
             lastName: lastName,
             country: country,
@@ -197,7 +221,7 @@ $("#addBtn").click(function() {
             roles: roles
         }), // Corrected syntax: added closing parenthesis
         success: function(response) {
-            alert("Do you like to add User? : " + response.firstName);
+            alert( response.firstName + " has been added successfully");
             fetchUsers();
 
             $("#firstName").val("");

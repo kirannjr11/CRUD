@@ -14,12 +14,14 @@ public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Byte id;
+    private Long id;
 
-    @Column(unique = true)
+
     private String role;
 
-
+    public Role (String role) {
+        this.role = role;
+    }
 
 
     @Override

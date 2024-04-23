@@ -2,6 +2,7 @@ package habsida.spring.boot_security.demo.controllers;
 
 import habsida.spring.boot_security.demo.models.Role;
 import habsida.spring.boot_security.demo.models.User;
+import habsida.spring.boot_security.demo.repositories.RoleRepository;
 import habsida.spring.boot_security.demo.services.RoleService;
 import habsida.spring.boot_security.demo.services.UserService;
 import lombok.AllArgsConstructor;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
 
     private final UserService userService;
+
     private final RoleService roleService;
 
     @Autowired
@@ -74,18 +78,15 @@ public class UserController {
     }
 
 
-    @GetMapping("/admin/new")
-    public ModelAndView newPerson(@ModelAttribute("user") User user) {
-        ModelAndView mov = new ModelAndView("/new");
-        mov.addObject("roles", roleService.listRoles());
-        return mov;
-    }
 
     @PostMapping("/admin/addUser")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         User addUser = userService.add(user);
         return new ResponseEntity<>(addUser, HttpStatus.CREATED);
     }
+
+
+
 
     @PostMapping("/admin/gen")
     public String create(@ModelAttribute("user") User user, Model model) {
@@ -178,6 +179,14 @@ public class UserController {
         userService.remove(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
+    @GetMapping("/admin/addRoles")
+    public ResponseEntity<List<Role>> addRoles() {
+        List<Role> roles = roleService.listRoles();
+        return new ResponseEntity<>(roles, HttpStatus.OK);
+    }
+
 
 
 
