@@ -11,6 +11,6 @@ public interface RoleService {
 
     void add(Role role);
 
-    Optional<Role> findById(byte id);
+    Optional<Role> findById(Long id);
 
 }

@@ -36,6 +36,25 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return user;
     }
+    @Override
+
+    public User update(Long id, User user) {
+        String newPassword = user.getPassword();
+        if (newPassword != null) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        }
+        Set<Role> roles = user.getRoles();
+        if(roles != null && !roles.isEmpty()) {
+            for(Role role : roles) {
+                if(role.getId() == null) {
+                    roleRepository.save(role);
+                }
+            }
+        }
+        userRepository.save(user);
+        return user;
+    }
+
 
     @Override
     public List<User> listUsers() {
@@ -48,15 +67,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public User update(Long id, User user) {
-        String newPassword = user.getPassword();
-        if (newPassword != null) {
-            user.setPassword(passwordEncoder.encode(newPassword));
-        }
-        userRepository.save(user);
-        return user;
-    }
+
 
 
     @Override

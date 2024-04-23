@@ -2,29 +2,21 @@ package habsida.spring.boot_security.demo.controllers;
 
 import habsida.spring.boot_security.demo.models.Role;
 import habsida.spring.boot_security.demo.models.User;
-import habsida.spring.boot_security.demo.repositories.RoleRepository;
 import habsida.spring.boot_security.demo.services.RoleService;
 import habsida.spring.boot_security.demo.services.UserService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class UserController {
@@ -96,17 +88,6 @@ public class UserController {
         return "redirect:/admin/gen";
     }
 
-
-
-//    @GetMapping("/admin/edit")
-//    public ModelAndView edit(@RequestParam long id) {
-//        ModelAndView mav = new ModelAndView("/edit");
-//        User user = userService.userById(id).get();
-//        mav.addObject("user", user);
-//        mav.addObject("roles", roleService.listRoles());
-//        return mav;
-//    }
-
     @GetMapping("admin/edit")
     public Object editUser(@RequestParam long id, @RequestHeader(value="X-Requested-With", required = false) String requestedWith) {
         Optional<User> userOptional = userService.userById(id);
@@ -124,18 +105,6 @@ public class UserController {
                 return ResponseEntity.notFound().build();
         }
     }
-
-//    @PostMapping("/admin/edit")
-//    public String update(@ModelAttribute("user") User user) {
-//        userService.update(user);
-//        return "redirect:/admin/gen";
-//    }
-
-//    @PostMapping("/admin/delete")
-//    public String deleteUser(@RequestParam long id) {
-//        userService.remove(id);
-//        return "redirect:/admin/gen";
-//    }
 
     @GetMapping("/admin/delete")
     public ModelAndView delete(@RequestParam long id) {
@@ -159,13 +128,6 @@ public class UserController {
         return mov;
     }
 
-//    @GetMapping("/admin/user")
-//    public String getUserPage(Model model, Principal principal) {
-//        List<User> users = userService.listUsers();
-//        model.addAttribute("users", users);
-//        model.addAttribute("username", principal.getName());
-//        return "user";
-//    }
 
     @PutMapping("/admin/user/update")
     public ResponseEntity<User> updateUser(@RequestParam Long id, @RequestBody User user) {
@@ -180,14 +142,10 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
     @GetMapping("/admin/addRoles")
     public ResponseEntity<List<Role>> addRoles() {
         List<Role> roles = roleService.listRoles();
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
-
-
-
 
 }

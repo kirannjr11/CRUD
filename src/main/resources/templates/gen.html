@@ -263,6 +263,30 @@ $(document).on("click", ".editBtn", function() {
     });
 });
 
+<!--fetching roles ro edit-->
+
+// Function to fetch roles and populate the dropdown
+function fetchRolesForEditForm() {
+    $.ajax({
+        url: "/admin/roles", // Assuming this endpoint retrieves roles
+        type: "GET",
+        success: function(response) {
+            var rolesSelect = $("#editroles");
+            rolesSelect.empty(); // Clear previous options
+            $.each(response, function(index, role) {
+                rolesSelect.append("<option value='" + role.role + "'>" + role.role + "</option>");
+            });
+        },
+        error: function(xhr, status, error) {
+            console.log("Error while fetching roles: " + error);
+        }
+    });
+}
+
+// Call the function to fetch roles when the page is loaded or when the edit form is opened
+$(document).ready(function() {
+    fetchRolesForEditForm();
+});
 
 
 <!--update-->
