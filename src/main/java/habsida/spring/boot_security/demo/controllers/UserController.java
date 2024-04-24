@@ -120,12 +120,20 @@ public class UserController {
         return "/index";
     }
 
+
     @GetMapping("/user")
     public ModelAndView user(Principal principal) {
         ModelAndView mov = new ModelAndView("/user");
         mov.addObject("user", userService.findByName(principal.getName()));
 
         return mov;
+    }
+
+    @GetMapping("usersList")
+    @ResponseBody
+    public ResponseEntity<List<User>> AllUsers() {
+        List<User> users = userService.listUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 
