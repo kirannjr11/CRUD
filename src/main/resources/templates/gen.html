@@ -145,8 +145,11 @@
         </div>
     </div>
 </div>
+</body>
 
+    
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 <script>
     function fetchUsers() {
         $.ajax({
@@ -184,7 +187,7 @@ function fetchRoles() {
         success: function(response) {
         console.log("Role response: ", response);
             var rolesSelect = $("#roles");
-            rolesSelect.empty(); // Clear previous options
+            rolesSelect.empty(); 
             $.each(response, function(index, role) {
             console.log("Role: ", role)
                 rolesSelect.append("<option value='" + role.role + "'>" + role.role + "</option>");
@@ -219,7 +222,7 @@ $("#addBtn").click(function() {
             country: country,
             password: password,
             roles: roles
-        }), // Corrected syntax: added closing parenthesis
+        }), 
         success: function(response) {
             alert( response.firstName + " has been added successfully");
             fetchUsers();
@@ -239,7 +242,7 @@ $("#addBtn").click(function() {
 <!---->
 
 $(document).on("click", ".editBtn", function() {
-    var id = $(this).data("id"); // Corrected this line
+    var id = $(this).data("id"); 
     $.ajax({
         url: "/admin/edit?id=" + id,
         type: "GET",
@@ -268,11 +271,11 @@ $(document).on("click", ".editBtn", function() {
 // Function to fetch roles and populate the dropdown
 function fetchRolesForEditForm() {
     $.ajax({
-        url: "/admin/roles", // Assuming this endpoint retrieves roles
+        url: "/admin/roles", 
         type: "GET",
         success: function(response) {
             var rolesSelect = $("#editroles");
-            rolesSelect.empty(); // Clear previous options
+            rolesSelect.empty(); 
             $.each(response, function(index, role) {
                 rolesSelect.append("<option value='" + role.role + "'>" + role.role + "</option>");
             });
@@ -283,7 +286,7 @@ function fetchRolesForEditForm() {
     });
 }
 
-// Call the function to fetch roles when the page is loaded or when the edit form is opened
+// Call the function to fetch roles 
 $(document).ready(function() {
     fetchRolesForEditForm();
 });
@@ -352,5 +355,5 @@ $(document).on("click", ".deleteBtn", function() {
     fetchUsers();
 </script>
 
-</body>
+
 </html>
