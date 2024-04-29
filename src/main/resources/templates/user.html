@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User List</title>
-    <!-- Bootstrap CSS -->
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
 </head>
 
 <body>
@@ -29,7 +30,6 @@
             </form>
         </div>
 
-        <!-- Main Content Area -->
         <div class="col-lg-9 bg-light text-dark d-flex flex-column vh-100">
             <div class="container">
                 <div class="col">
@@ -64,9 +64,10 @@
         </div>
     </div>
 </div>
-
+</body>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 <script>
     function fetchUsers() {
          $.ajax({
@@ -83,8 +84,6 @@
                          "<td>" + user.lastName + "</td>" +
                          "<td>" + user.country + "</td>" +
                          "<td>" + user.roles.map(role => role.role).join(", ") + "</td>" +
-<!--                         "<td><button class='btn btn-primary btn-sm editBtn' data-id='" + user.id + "'>Edit</button></td>" +-->
-<!--                         "<td><button class='btn btn-danger btn-sm deleteBtn' data-id='" + user.id + "'>Delete</button></td>" +-->
                          "</tr>";
 
                      tableBody.append(row);
@@ -96,9 +95,5 @@
          });
      }
     fetchUsers();
-
-
 </script>
-</body>
-
 </html>
