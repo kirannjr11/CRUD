@@ -180,28 +180,7 @@
     }
 
 
-function fetchRoles() {
-    $.ajax({
-        url: "/admin/addRoles",
-        type: "GET",
-        success: function(response) {
-        console.log("Role response: ", response);
-            var rolesSelect = $("#roles");
-            rolesSelect.empty(); 
-            $.each(response, function(index, role) {
-            console.log("Role: ", role)
-                rolesSelect.append("<option value='" + role.role + "'>" + role.role + "</option>");
-            });
-        },
-        error: function(xhr, status, error) {
-            console.log("Error while fetching roles: " + error);
-        }
-    });
-}
 
-$(document).ready(function() {
-    fetchRoles();
-});
 
 <!--    add User-->
 
