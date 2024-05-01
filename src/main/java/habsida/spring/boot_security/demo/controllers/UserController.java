@@ -62,6 +62,8 @@ public class UserController {
         return mov;
     }
 
+
+
     @GetMapping("admin/userData")
     @ResponseBody
     public ResponseEntity<List<User>> getAllUsers() {

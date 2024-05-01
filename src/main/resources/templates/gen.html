@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Admin Panel</title>
@@ -10,8 +10,8 @@
 <!--admin table-->
 <nav class="navbar navbar-dark bg-dark">
     <div class="text-light">
-        <span></span>
-        <span></span>
+        <span th:text="${loggedInUser.firstName}"></span>
+        <span th:text="${loggedInUser.lastName}"></span>
     </div>
     <form class="form-inline" action="/logout" method="POST">
         <button class="btn btn-outline-dark my-2 my-sm-0 text-light" type="submit">Logout</button>
@@ -19,7 +19,7 @@
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <div class="col bg-light text-dark d-flex flex-column vh-50">
+        <div class="col bg-light text-dark d-flex flex-column vh-40">
             <div class="container">
                 <div class="col">
                     <div class="col-lg-12 offset-lg py-5">
@@ -67,7 +67,7 @@
 <!--    add user-->
 
     <div class="row">
-        <div class="col-md-6 bg-white text-primary d-flex flex-column vh-50">
+        <div class="col-md-6 bg-white text-primary d-flex flex-column vh-60">
             <div class="card-header">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Add New User</h5>
@@ -106,7 +106,7 @@
 
 <!--        edit user-->
 
-        <div class="col-md-6 bg-white text-primary d-flex flex-column vh-100">
+        <div class="col-md-6 bg-white text-primary d-flex flex-column vh-60">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">Edit User</h5>
@@ -138,7 +138,7 @@
                         </div>
                         <div class="text-center">
                             <button type="button" id="updateBtn" class="btn btn-primary">Update</button>
-                            <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancel</button>
+                            <button type="button" id="cancelBtn" class="btn btn-danger">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -223,7 +223,7 @@ $("#addBtn").click(function() {
             country: country,
             password: password,
             roles: roles
-        }),git
+        }),
         success: function(response) {
             alert( response.firstName + " has been added successfully");
             fetchUsers();
@@ -266,6 +266,16 @@ $(document).on("click", ".editBtn", function() {
         }
     });
 });
+
+<!--cancel button-->
+
+$("#cancelBtn").click(function() {
+     $("#editfirstName").val("");
+    $("#editlastName").val("");
+    $("#editcountry").val("");
+    $("#editpassword").val("");
+    $("#editroles").val("")
+})
 
 
 <!--fetching roles to edit-->
