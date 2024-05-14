@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
+
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
@@ -23,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public User add(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Set<Role> roles = user.getRoles();
@@ -37,7 +40,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
     @Override
-
+    @Transactional
     public User update(Long id, User user) {
         String newPassword = user.getPassword();
         if (newPassword != null) {
@@ -62,6 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void remove(long id) {
         userRepository.deleteById(id);
     }

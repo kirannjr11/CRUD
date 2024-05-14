@@ -15,7 +15,7 @@
                         "<td>" + user.lastName + "</td>" +
                         "<td>" + user.country + "</td>" +
                         "<td>" + user.roles.map(role => role.role).join(", ") + "</td>" +
-                        "<td><button class='btn btn-primary btn-sm editBtn' data-id='" + user.id + "'>Edit</button></td>" +
+                        "<td><button class='btn btn-primary btn-sm editBtn' data-id='" + user.id + "' data-bs-toggle='modal' data-bs-target='#exampleModal'>Edit</button></td>" +
                         "<td><button class='btn btn-danger btn-sm deleteBtn' data-id='" + user.id + "'>Delete</button></td>" +
                         "</tr>";
 
@@ -48,12 +48,17 @@ $(document).ready(function() {
 });
 
 <!--    add User-->
+$(document).ready(function() {
+    $("#addUser").click(function() {
+        $("#exampleModal2").modal('show');
+    });
+})
 
 $("#addBtn").click(function() {
-    var firstName = $("#firstName").val();
-    var lastName = $("#lastName").val();
-    var country = $("#country").val();
-    var password = $("#password").val();
+    var firstName = $("#addfirstName").val();
+    var lastName = $("#addlastName").val();
+    var country = $("#addcountry").val();
+    var password = $("#addpassword").val();
     var roles = $("#roles").val();
 
     if (firstName === '' || lastName === '' || country === '' || password === '' || roles === null || roles.length === 0) {
@@ -73,14 +78,14 @@ $("#addBtn").click(function() {
             roles: roles
         }),
         success: function(response) {
-            alert( response.firstName + " has been added successfully");
-            fetchUsers();
+         $('#exampleModal2').modal('hide');
+            $("#successMessage").text(response.firstName + " has been added successfully").fadeIn();
 
-            $("#firstName").val("");
-            $("#lastName").val("");
-             $("#country").val("");
-            $("#password").val("");
-            $("#roles").val("");
+            setTimeout(function() {
+                $("#successMessage").fadeOut();
+            },3000);
+
+            fetchUsers();
         },
         error: function(xhr, status, error) {
             console.log("Error while adding new user: " + error);
@@ -107,7 +112,10 @@ $(document).on("click", ".editBtn", function() {
             data.roles.forEach(function(role) {
                  $("#editRoles").append('<option value="' + role.id + '">' + role.role + '</option>');
             });
-            $("#editSection").show();
+//            $("#editSection").show();
+
+            $('#exampleModal').modal('show');
+
         },
         error: function(xhr, status, error) {
             console.log("error while editing: " + error);
@@ -123,6 +131,8 @@ $("#cancelBtn").click(function() {
     $("#editcountry").val("");
     $("#editpassword").val("");
     $("#editroles").val("")
+
+     $('#exampleModal').modal('hide');
 })
 
 
@@ -162,10 +172,14 @@ $("#updateBtn").click(function() {
     var password = $("#editpassword").val();
     var roles = $("#editroles").val();
 
+
+
     if (firstName === '' || lastName === '' || country === '' || password === '' || roles === null || roles.length === 0) {
         alert("Please fill out all required fields.");
         return;
     }
+    $('#exampleModal').modal('hide');
+
 
     $.ajax({
         url: "/admin/user/update?id=" + id,

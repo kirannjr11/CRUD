@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>Admin Panel</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 <body>
+
+
 
 <!--admin table-->
 <nav class="navbar navbar-dark bg-dark">
@@ -19,7 +22,7 @@
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <div class="col bg-light text-dark d-flex flex-column vh-40">
+        <div class="col bg-light text-dark d-flex flex-column vh-100">
             <div class="container">
                 <div class="col">
                     <div class="col-lg-12 offset-lg py-5">
@@ -27,12 +30,7 @@
                         <div class="card mt-5">
                             <div class="card-header">
                                 <div class="row">
-                                    <form action="/admin/gen" method="GET" class="d-inline">
-                                        <button type="submit" class="btn btn-light">All Users</button>
-                                    </form>
-                                    <form class="ml-2" action="/admin/new">
-                                        <button type="submit" class="btn btn-light">New User</button>
-                                    </form>
+                                    <button class='btn btn-light addNewBtn' id="addUser" data-bs-toggle='modal' data-bs-target='#exampleModal'>Add User</button>
                                 </div>
                             </div>
                             <div class="card-header">
@@ -56,62 +54,27 @@
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </div>
+                <div id="successMessage" style="color:green; font-weight: italic; font-size: 25px; margin-left: 27rem;"></div>
             </div>
         </div>
+
     </div>
 
 
-<!--    add user-->
+        <!--        edit user-->
 
-    <div class="row">
-        <div class="col-md-6 bg-white text-primary d-flex flex-column vh-60">
-            <div class="card-header">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Add New User</h5>
-                </div>
-                <div class="card-body">
-                    <form method="post" action="/admin/gen">
-                        <div class="form-group text-center">
-                            <label for="firstName">Enter firsName</label>
-                            <input type="text" id="firstName" required/>
-                        </div>
-                        <div class="form-group text-center">
-                            <label for="lastName">Enter LastName</label>
-                            <input type="text" id="lastName" required/>
-                        </div>
-                        <div class="form-group text-center">
-                            <label for="country">Enter Country</label>
-                            <input type="text" id="country" required/>
-                        </div>
-                        <div class="form-group text-center">
-                            <label for="password">Enter Password</label>
-                            <input type="password" id="password" required/>
-                        </div>
-                        <div class="form-group text-center">
-                            <label for="roles">Roles</label>
-                            <select id="roles" multiple required>
-                                <option></option>
-                            </select>
-                        </div>
-                        <div class="text-center">
-                            <button type="button" id = "addBtn" class="btn btn-success">Add </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mb-0">Edit User</h5>
 
-<!--        edit user-->
-
-        <div class="col-md-6 bg-white text-primary d-flex flex-column vh-60">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Edit User</h5>
                 </div>
-                <div class="card-body">
+                <div class="modal-body">
                     <form id="editUserForm">
                         <input type="hidden" id="editId"/>
                         <div class="form-group text-center">
@@ -133,22 +96,71 @@
                         <div class="form-group text-center">
                             <label for="editroles">Roles</label>
                             <select id="editroles" multiple>
-
                             </select>
                         </div>
                         <div class="text-center">
                             <button type="button" id="updateBtn" class="btn btn-primary">Update</button>
-                            <button type="button" id="cancelBtn" class="btn btn-danger">Cancel</button>
+                            <button type="button" id="cancelBtn" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+<!--    add User-->
+
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mb-0">Add New User</h5>
+
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <div class="form-group text-center">
+                            <label for="addfirstName">Enter firstName</label>
+                            <input type="text" id="addfirstName" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="addlastName">Enter lastName</label>
+                            <input type="text" id="addlastName" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="addcountry">Enter country</label>
+                            <input type="text" id="addcountry" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="addpassword">Enter Password</label>
+                            <input type="password" id="addpassword" required/>
+                        </div>
+                        <div class="form-group text-center">
+                            <label for="roles">Roles</label>
+                            <select id="roles" multiple>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" id="addBtn" class="btn btn-success" >Add</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com./bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script src="/js/gen.js"></script>
+
+
+
 
 </body>
 </html>
