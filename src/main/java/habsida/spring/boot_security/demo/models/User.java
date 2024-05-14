@@ -21,14 +21,14 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
 
+    @Column(unique = true)
     private String firstName;
     private String lastName;
     private String country;
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles", joinColumns = {@JoinColumn(name = "user_id")},
                 inverseJoinColumns = {@JoinColumn(name = "roles_id")})
     private Set<Role> roles;
@@ -57,7 +57,8 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getFirstName();
+//        return getFirstName();
+        return firstName;
     }
 
     @Override
