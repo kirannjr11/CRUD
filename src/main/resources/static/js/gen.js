@@ -79,7 +79,7 @@ $("#addBtn").click(function() {
         }),
         success: function(response) {
          $('#exampleModal2').modal('hide');
-            $("#successMessage").text(response.firstName + " has been added successfully").fadeIn();
+            $("#successMessage").text(response.firstName + response.lastName + " has been added successfully").fadeIn();
 
             setTimeout(function() {
                 $("#successMessage").fadeOut();
